@@ -1,1 +1,1 @@
-start /wait iexplore http://google.com
+start /wait iexplore %1

@@ -51,6 +51,18 @@ Google_WikipediaScrolling(exe, window_title, log) {
 	PowerStop(OutputVarPID, log)
 }
 
+SingleSite(exe, window_title, log) {
+	PowerStart(exe, OutputVarPID)
+	SendToBrowser(window_title,60000, "!{F4}")
+	PowerStop(OutputVarPID, log)
+}
+
+
 Google_WikipediaScrolling("C:\Program Files (x86)\Nightly\firefox.exe -no-remote -profile normal-profile www.google.com", "Nightly", "nightly_power.log")
 Sleep, 1000
-Google_WikipediaScrolling("ie.bat", "Windows Internet Explorer", "ie_power.log")
+Google_WikipediaScrolling("ie.bat www.google.com", "Windows Internet Explorer", "ie_power.log")
+Sleep, 1000
+SingleSite("C:\Program Files (x86)\Nightly\firefox.exe -no-remote -profile normal-profile http://ie.microsoft.com/testdrive/performance/fishbowl/", "Nightly", "nightly_fish.log")
+Sleep, 1000
+SingleSite("ie.bat http://ie.microsoft.com/testdrive/performance/fishbowl/", "Windows Internet Explorer", "ie_fish.log")
+
