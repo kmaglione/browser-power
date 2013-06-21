@@ -166,3 +166,5 @@ pip-log.txt
 normal-profile
 #log files
 *.log
+#power log files
+*.ipg

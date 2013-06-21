@@ -16,7 +16,16 @@ SendToBrowser(title, delay, text) {
 
 DoIt(exe, window_title, log) {
 	; run ff
-	Run, "C:\Program Files\Intel\Power Gadget 2.5\PowerLog.exe" -cmd %exe% ,,Max,OutputVarPID
+	power_log := "C:\Program Files\Intel\Power Gadget 2.5\PowerLog.exe"
+    if not FileExist(power_log) {
+		;MsgBox, "Could not find " . %power_log%		
+		power_log := "C:\Program Files\Intel\Power Gadget 2.6\PowerLog.exe"
+    }
+	if not FileExist(power_log) {
+		MsgBox, "Could not find " . %power_log%
+		Exit
+    }
+	Run, %power_log% -cmd %exe% ,,Max,OutputVarPID
 	; wait for it to get ready
 	SendToBrowser(window_title,5000, "Taras Glek{Enter}")
 	SendToBrowser(window_title,5000, "^t")
