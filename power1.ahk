@@ -14,7 +14,7 @@ SendToBrowser(title, delay, text) {
 	Send % text
 }
 
-DoIt(exe, window_title, log) {
+PowerStart(exe, ByRef OutputVarPID) {
 	FileDelete %log%
 	; run ff
 	power_log := "C:\Program Files\Intel\Power Gadget 2.5\PowerLog.exe"
@@ -27,6 +27,16 @@ DoIt(exe, window_title, log) {
 		Exit
     }
 	Run, %power_log% -cmd %exe% ,,Max,OutputVarPID
+}
+
+PowerStop(PID, log) {
+	WinWaitClose ahk_pid %PID%
+	;Sleep, 2000
+	FileMove, PowerLog.ipg, %log%
+}
+
+Google_WikipediaScrolling(exe, window_title, log) {
+	PowerStart(exe, OutputVarPID)
 	; wait for it to get ready
 	SendToBrowser(window_title,5000, "Taras Glek{Enter}")
 	SendToBrowser(window_title,5000, "^t")
@@ -38,11 +48,9 @@ DoIt(exe, window_title, log) {
 	   SendToBrowser(window_title,10, "{Down}")
 	}
 	SendToBrowser(window_title,5000, "!{F4}")
-	WinWaitClose ahk_pid %OutputVarPID%
-	Sleep, 2000
-	FileMove, PowerLog.ipg, %log%
+	PowerStop(OutputVarPID, log)
 }
 
-DoIt("C:\Program Files (x86)\Nightly\firefox.exe -no-remote -profile normal-profile www.google.com", "Nightly", "nightly_power.log")
+Google_WikipediaScrolling("C:\Program Files (x86)\Nightly\firefox.exe -no-remote -profile normal-profile www.google.com", "Nightly", "nightly_power.log")
 Sleep, 1000
-DoIt("ie.bat", "Windows Internet Explorer", "ie_power.log")
+Google_WikipediaScrolling("ie.bat", "Windows Internet Explorer", "ie_power.log")
