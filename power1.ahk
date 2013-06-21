@@ -15,6 +15,7 @@ SendToBrowser(title, delay, text) {
 }
 
 DoIt(exe, window_title, log) {
+	FileDelete %log%
 	; run ff
 	power_log := "C:\Program Files\Intel\Power Gadget 2.5\PowerLog.exe"
     if not FileExist(power_log) {
@@ -37,8 +38,8 @@ DoIt(exe, window_title, log) {
 	   SendToBrowser(window_title,10, "{Down}")
 	}
 	SendToBrowser(window_title,5000, "!{F4}")
-	WinWait ahk_pid %OutputVarPID%
-	Sleep, 1000
+	WinWaitClose ahk_pid %OutputVarPID%
+	Sleep, 2000
 	FileMove, PowerLog.ipg, %log%
 }
 
